@@ -1,0 +1,5 @@
+import { SECONDS_IN_MINUTE, MS_IN_SECOND, MINUTES_IN_HOUR } from "./constants";
+
+export const FARM_TIME_HOURS = 8;
+
+export const FARM_TIME_MS = FARM_TIME_HOURS * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MS_IN_SECOND;

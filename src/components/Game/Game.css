@@ -1,0 +1,41 @@
+.Game-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    height: 20%;
+    border-radius: 24px;
+    background: black;
+    padding: 8px 16px;
+    color: white;
+}
+
+.Game-button {
+    display: inline-block;
+    font-family: "Karmatic Arcade", serif;
+    outline: 0;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    height: 38px;
+    padding: 8px 24px;
+    border-radius: 50px;
+    background-image: linear-gradient(180deg, #fff, #f5f5fa);
+    border: 2px solid black;
+    transition: all 0.2s ease-out;
+}
+
+.Game-text {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-family: "Karmatic Arcade", serif;
+}
+
+.Game-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}

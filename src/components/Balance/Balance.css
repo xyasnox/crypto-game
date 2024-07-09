@@ -1,0 +1,8 @@
+.Balance-container {
+    display: flex;
+    align-items: center;
+}
+
+.Balance-value {
+    font-family: "Karmatic Arcade", serif;
+}

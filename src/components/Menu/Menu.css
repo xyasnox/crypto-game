@@ -1,0 +1,26 @@
+.Menu-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Menu-element {
+    font-family: "Karmatic Arcade", serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px;
+    opacity: 0.5;
+}
+
+.Menu-current {
+    opacity: 1;
+}
+
+.Menu-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
