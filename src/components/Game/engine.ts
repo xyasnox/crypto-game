@@ -18,7 +18,7 @@ import {
 import { Background, EnemyObj, Player, ResourceObj } from './classes';
 import { EnemyController, ResourceController } from './controllers';
 
-import { MS_IN_SECOND, } from '../../constants';
+import { MS_IN_SECOND } from '../../constants';
 import { formatTimer } from '../../utils';
 
 export const engine = () => {

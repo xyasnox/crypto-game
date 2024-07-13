@@ -1,0 +1,37 @@
+.Task-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+    gap: 16px;
+}
+
+.Task-title {
+    display: inline-flex;
+    justify-content: center;
+}
+
+.Task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Task-text {
+    display: inline-flex;
+    gap: 2px;
+    flex-direction: column;
+}
+
+.Task-name {
+    font-size: 14px;
+}
+
+.Task-amount {
+    font-size: 12px;
+}
+
+.Task-icon {
+    width: 24px;
+    height: 24px;
+}

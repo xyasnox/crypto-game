@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { useContext } from 'react';
 
-import { AppContext, Screens } from '../../AppContext';
+import AppContext, { AppContextType, Screens } from '../../context/AppContext';
 import { FriendIcon, HomeIcon, TaskIcon } from '../../assets';
 
 import './Menu.css';
@@ -20,7 +20,7 @@ const Icon: React.FC<{ value: Screens }> = ({ value }) => {
 };
 
 export const Menu: React.FC = () => {
-    const { screen, setScreen } = useContext(AppContext);
+    const { screen, setScreen } = useContext<AppContextType>(AppContext);
 
     return (
         <div className="Menu-container">

@@ -1,10 +1,12 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
-interface ContextValue {
+export interface AppContextType {
     screen: Screens;
     setScreen: Dispatch<SetStateAction<Screens>>;
     userInfo: UserInfo;
     setUserInfo: Dispatch<SetStateAction<UserInfo>>;
+    tasks: Task[];
+    setTasks: Dispatch<SetStateAction<Task[]>>;
 }
 
 export enum Screens {
@@ -19,7 +21,15 @@ export interface UserInfo {
     farmEndTimestamp?: number;
 }
 
-export const AppContext = React.createContext<ContextValue>({
+export type Task = {
+    id: string;
+    name: string;
+    isCompleted: boolean;
+    amount: number;
+    action: (() => void) | string;
+};
+
+const AppContext = React.createContext<AppContextType>({
     screen: Screens.home,
     setScreen: () => null,
     userInfo: {
@@ -27,4 +37,8 @@ export const AppContext = React.createContext<ContextValue>({
         remainingGames: 0,
     },
     setUserInfo: () => null,
+    tasks: [],
+    setTasks: () => [],
 });
+
+export default AppContext;

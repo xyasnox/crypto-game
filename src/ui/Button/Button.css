@@ -1,0 +1,19 @@
+.Button {
+    display: inline-block;
+    font-family: "Karmatic Arcade", serif;
+    outline: 0;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    height: 38px;
+    padding: 8px 24px;
+    border-radius: 50px;
+    background-image: linear-gradient(180deg, #fff, #f5f5fa);
+    border: 2px solid black;
+    transition: all 0.2s ease-out;
+    color: black;
+}
+
+.Button-disabled {
+    opacity: 0.5;
+}

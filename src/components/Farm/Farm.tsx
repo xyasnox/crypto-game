@@ -1,16 +1,19 @@
+import cn from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { AppContext } from '../../AppContext';
+import { collectFarm, updateFarmTimestamp } from '../../api';
+import { MS_IN_SECOND } from '../../constants';
+import { FARM_TIME_MS } from '../../config';
+import AppContext, { AppContextType } from '../../context/AppContext';
 import { formatTimer, percentage } from '../../utils';
-import { MS_IN_SECOND } from "../../constants";
-import { FARM_TIME_MS } from "../../config";
 
 import './Farm.css';
 
 export const Farm: React.FC = () => {
     const {
         userInfo: { farmEndTimestamp },
-    } = useContext(AppContext);
+        setUserInfo,
+    } = useContext<AppContextType>(AppContext);
 
     const now = new Date().valueOf();
 
@@ -22,8 +25,6 @@ export const Farm: React.FC = () => {
     useEffect(() => {
         const timerID = setInterval(() => setValue((prevState) => --prevState), MS_IN_SECOND);
 
-        console.log(farmEndTimestamp, now);
-
         return () => clearInterval(timerID);
     }, []);
 
@@ -31,13 +32,28 @@ export const Farm: React.FC = () => {
         <div
             onClick={() => {
                 if (!isCollected) {
-                    setCollected(true);
+                    collectFarm({ accountId: 1234 }).then(({ earned }) => {
+                        setUserInfo((prevState) => ({
+                            ...prevState,
+                            balance: prevState.balance + earned,
+                        }));
+                        setCollected(true);
+                    });
                 } else if (!timerLeft) {
-                    setCollected(false);
+                    updateFarmTimestamp({ accountId: 1234 }).then(({ farmEndTimestamp }) => {
+                        setUserInfo((prevState) => ({
+                            ...prevState,
+                            farmEndTimestamp,
+                        }));
+                        setValue(farmEndTimestamp);
+                        setCollected(false);
+                    });
                 }
             }}
-            style={{ '--filling': `${farmEndTimestamp ? percentage(timeLeft, FARM_TIME_MS) : 0}%` } as React.CSSProperties}
-            className="Farm-container"
+            style={
+                { '--filling': `${farmEndTimestamp ? percentage(timeLeft, FARM_TIME_MS) : 0}%` } as React.CSSProperties
+            }
+            className={cn('Farm-container', !isCollected && !timerLeft && 'Farm-active')}
         >
             {timerLeft && `Farming: ${timerLeft}`}
             {!timerLeft && !isCollected && 'Collect'}

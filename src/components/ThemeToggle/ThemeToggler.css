@@ -1,0 +1,11 @@
+.Theme-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.Theme-icon {
+    color: var(--text-color);
+    width: 36px;
+    height: 36px;
+}

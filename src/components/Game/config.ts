@@ -1,4 +1,4 @@
-import { SECONDS_IN_MINUTE, MS_IN_SECOND } from "../../constants";
+import { SECONDS_IN_MINUTE, MS_IN_SECOND } from '../../constants';
 
 export const GAME_SPEED_START = 0.5;
 

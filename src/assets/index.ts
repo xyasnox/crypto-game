@@ -1,5 +1,9 @@
 export { CardIcon } from './CardIcon';
+export { CheckIcon } from './CheckIcon';
+export { CloseIcon } from './CloseIcon';
 export { FriendIcon } from './FriendIcon';
 export { HomeIcon } from './HomeIcon';
+export { MoonIcon } from './MoonIcon';
 export { TaskIcon } from './TaskIcon';
+export { SunIcon } from './SunIcon';
 export { WalletIcon } from './WalletIcon';
