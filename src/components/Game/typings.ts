@@ -8,9 +8,8 @@ export interface Position {
     y: number;
 }
 
-export type GameInfo = {
+export interface GameInfo {
     isGameOver: boolean;
-    timer: number;
     score: number;
     isPlayerAlive: boolean;
-};
+}

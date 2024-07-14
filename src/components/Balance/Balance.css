@@ -4,5 +4,5 @@
 }
 
 .Balance-value {
-    font-family: "Karmatic Arcade", serif;
+    color: var(--text-color);
 }

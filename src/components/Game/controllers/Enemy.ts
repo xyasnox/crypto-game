@@ -5,9 +5,13 @@ import { ENEMY_INTERVAL_MAX, ENEMY_INTERVAL_MIN } from '../config';
 
 interface EnemyControllerInterface {
     setNextShowTime(): void;
+
     createEnemySprite(): void;
+
     draw(): void;
+
     checkCollision(sprite: Player): void;
+
     reset(): void;
 }
 

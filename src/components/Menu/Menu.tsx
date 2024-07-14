@@ -6,7 +6,7 @@ import { FriendIcon, HomeIcon, TaskIcon } from '../../assets';
 
 import './Menu.css';
 
-const screenValues = Object.values(Screens);
+const screenValues = Object.values(Screens).filter((screen) => screen !== Screens.game);
 
 const Icon: React.FC<{ value: Screens }> = ({ value }) => {
     switch (value) {
@@ -16,6 +16,8 @@ const Icon: React.FC<{ value: Screens }> = ({ value }) => {
             return <TaskIcon className="Menu-icon" />;
         case Screens.frens:
             return <FriendIcon className="Menu-icon" />;
+        default:
+            return <></>;
     }
 };
 

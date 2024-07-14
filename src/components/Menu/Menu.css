@@ -6,12 +6,12 @@
 }
 
 .Menu-element {
-    font-family: "Karmatic Arcade", serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 4px;
     opacity: 0.5;
+    color: var(--text-color);
 }
 
 .Menu-current {

@@ -5,7 +5,7 @@ import { collectFarm, updateFarmTimestamp } from '../../api';
 import { MS_IN_SECOND } from '../../constants';
 import { FARM_TIME_MS } from '../../config';
 import AppContext, { AppContextType } from '../../context/AppContext';
-import { formatTimer, percentage } from '../../utils';
+import { formatTimestamp, percentage } from '../../utils';
 
 import './Farm.css';
 
@@ -19,7 +19,7 @@ export const Farm: React.FC = () => {
 
     const [value, setValue] = useState<number>(farmEndTimestamp || 0);
     const timeLeft = value - now;
-    const timerLeft = formatTimer(timeLeft);
+    const timerLeft = formatTimestamp(timeLeft);
     const [isCollected, setCollected] = useState<boolean>(false);
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export const Farm: React.FC = () => {
     return (
         <div
             onClick={() => {
-                if (!isCollected) {
+                if (!isCollected && !timerLeft) {
                     collectFarm({ accountId: 1234 }).then(({ earned }) => {
                         setUserInfo((prevState) => ({
                             ...prevState,

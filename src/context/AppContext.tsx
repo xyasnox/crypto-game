@@ -13,6 +13,7 @@ export enum Screens {
     home = 'home',
     tasks = 'tasks',
     frens = 'frens',
+    game = 'game',
 }
 
 export interface UserInfo {

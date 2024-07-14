@@ -1,13 +1,35 @@
 @font-face {
-    font-family: "Karmatic Arcade";
-    src: url(../public/ka1.ttf) format("truetype");
-}
-
-body {
-    margin: 0;
-    font-family: "Karmatic Arcade", sans-serif;
+    font-family: "Joystix monospace";
+    src: url(../public/joystix.otf) format("opentype");
 }
 
 * {
     box-sizing: border-box;
+}
+
+:root {
+    --font-family: "Joystix monospace", sans-serif;
+}
+
+:root[data-theme="light"] {
+    --background-color: #f8f9fa;
+    --text-color: #343a40;
+    --element-color: #343a40;
+    --element-text-color: #e9ecef;
+    --accent-color: #4fb286;
+}
+
+:root[data-theme="dark"] {
+    --background-color: #212529;
+    --text-color: #ced4da;
+    --element-color: #ced4da;
+    --element-text-color: #495057;
+    --accent-color: #3c896d;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background: var(--background-color);
 }

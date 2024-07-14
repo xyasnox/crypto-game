@@ -1,6 +1,5 @@
 .Button {
     display: inline-block;
-    font-family: "Karmatic Arcade", serif;
     outline: 0;
     cursor: pointer;
     font-weight: 600;
@@ -8,10 +7,15 @@
     height: 38px;
     padding: 8px 24px;
     border-radius: 50px;
-    background-image: linear-gradient(180deg, #fff, #f5f5fa);
-    border: 2px solid black;
-    transition: all 0.2s ease-out;
-    color: black;
+    border: 0;
+    font-family: var(--font-family);
+    background: var(--background-color);
+    color: var(--text-color);
+}
+
+.Button-reverse {
+    background: var(--element-color);
+    color: var(--element-text-color);
 }
 
 .Button-disabled {

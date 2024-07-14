@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 
 import { CheckIcon } from '../../assets';
 import AppContext from '../../context/AppContext';
+import { MS_IN_SECOND } from '../../constants';
 import { Button } from '../../ui';
 
 import './TaskList.css';
@@ -20,23 +21,26 @@ export const TaskList: React.FC = () => {
                     </span>
                     {!isCompleted ? (
                         <Button
-                            onClick={async () => {
+                            reversed
+                            onClick={() => {
                                 if (typeof action === 'string') {
-                                    await window.open(action);
+                                    window.open(action);
 
-                                    setTasks((prevState) =>
-                                        prevState.map((item) => {
-                                            if (item.id === id) {
-                                                return { ...item, isCompleted: true };
-                                            }
+                                    setTimeout(() => {
+                                        setTasks((prevState) =>
+                                            prevState.map((item) => {
+                                                if (item.id === id) {
+                                                    return { ...item, isCompleted: true };
+                                                }
 
-                                            return item;
-                                        }),
-                                    );
-                                    setUserInfo((prevState) => ({
-                                        ...prevState,
-                                        balance: prevState.balance + amount,
-                                    }));
+                                                return item;
+                                            }),
+                                        );
+                                        setUserInfo((prevState) => ({
+                                            ...prevState,
+                                            balance: prevState.balance + amount,
+                                        }));
+                                    }, MS_IN_SECOND * 30);
                                     return;
                                 }
 

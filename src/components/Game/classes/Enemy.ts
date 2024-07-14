@@ -19,7 +19,9 @@ interface EnemyConstructorProps extends CommonConstructorProps {
 
 interface EnemyInterface {
     update(speed: number, gameSpeed: number, frameTimeDelta: number, scaleRatio: number): void;
+
     draw(): void;
+
     isCollidedWith(player: Player): void;
 }
 

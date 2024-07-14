@@ -1,5 +1,5 @@
 import { CommonConstructorProps, Position } from '../typings';
-import { GRAVITY, JUMP_SPEED, WALK_ANIMATION_TIMER, PLAYER_MODEL_WIDTH, DEAD_PLAYER_MODEL_WIDTH } from '../config';
+import { GRAVITY, JUMP_SPEED, PLAYER_MODEL_HEIGHT, PLAYER_MODEL_WIDTH, WALK_ANIMATION_TIMER } from '../config';
 
 interface PlayerConstructorProps extends CommonConstructorProps {
     width: number;
@@ -11,9 +11,13 @@ interface PlayerConstructorProps extends CommonConstructorProps {
 
 interface PlayerInterface {
     draw(): void;
+
     update(speed: number, gameSpeed: number, frameTimeDelta: number, scaleRatio: number): void;
+
     run(gameSpeed: number, frameTime: number): void;
+
     jump(frameTime: number): void;
+
     die(frameTime: number): void;
 }
 
@@ -21,9 +25,9 @@ export class Player implements PlayerInterface {
     private walkAnimationTimer: number = WALK_ANIMATION_TIMER;
     private frameCounter: number = 0;
 
-    private runImagesArray: HTMLImageElement[] = new Array(2).fill('').map((_, index) => {
+    private runImagesArray: HTMLImageElement[] = new Array(3).fill('').map((_, index) => {
         const image = new Image();
-        image.src = `../../sprites/captain/run/${index + 1}.png`;
+        image.src = `../../sprites/astronaut/run/${index + 1}.png`;
 
         return image;
     });
@@ -35,7 +39,7 @@ export class Player implements PlayerInterface {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     width: number;
-    readonly height: number;
+    height: number;
     position: Position;
     private readonly initialY: number;
     private readonly minJumpHeight: number;
@@ -63,10 +67,10 @@ export class Player implements PlayerInterface {
         this.scaleRatio = scaleRatio;
 
         this.image = new Image();
-        this.image.src = '../../sprites/captain/run/1.png';
+        this.image.src = '../../sprites/astronaut/run/1.png';
 
         this.dieImage = new Image();
-        this.dieImage.src = `../../sprites/captain/die/1.png`;
+        this.dieImage.src = `../../sprites/astronaut/die/1.png`;
 
         // Keyboard events
         window.removeEventListener('keydown', this._keydown);
@@ -146,10 +150,12 @@ export class Player implements PlayerInterface {
 
     die(frameTime: number) {
         this.image = this.dieImage;
-        this.width = DEAD_PLAYER_MODEL_WIDTH * this.scaleRatio;
+        this.width = PLAYER_MODEL_HEIGHT * this.scaleRatio;
+        this.height = PLAYER_MODEL_WIDTH * this.scaleRatio;
 
         if (this.position.y < this.initialY) {
             this.position.y += GRAVITY * frameTime * this.scaleRatio;
+
             if (this.position.y + this.height > this.canvas.height) {
                 this.position.y = this.initialY;
             }

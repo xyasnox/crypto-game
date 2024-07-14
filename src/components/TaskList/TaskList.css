@@ -4,6 +4,7 @@
     width: 100%;
     flex: 1;
     gap: 16px;
+    color: var(--text-color);
 }
 
 .Task-title {
