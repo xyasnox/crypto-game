@@ -151,7 +151,6 @@ export class Player implements PlayerInterface {
     die(frameTime: number) {
         this.image = this.dieImage;
         this.width = PLAYER_MODEL_HEIGHT * this.scaleRatio;
-        this.height = PLAYER_MODEL_WIDTH * this.scaleRatio;
 
         if (this.position.y < this.initialY) {
             this.position.y += GRAVITY * frameTime * this.scaleRatio;

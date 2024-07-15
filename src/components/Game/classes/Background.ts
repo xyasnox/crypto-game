@@ -49,4 +49,6 @@ export class Background implements BackgroundInterface {
     update(gameSpeed: number, frameTimeDelta: number, scaleRatio: number) {
         this.background.x -= gameSpeed * frameTimeDelta * scaleRatio;
     }
+
+    
 }

@@ -3,7 +3,7 @@ import { v6 as uuid } from 'uuid';
 
 import AppContext, { Screens, Task, UserInfo } from './context/AppContext';
 import ThemeContext, { Themes } from './context/ThemeContext';
-import { Balance, Farm, Game, GameWidget, Menu, TaskList, ThemeToggle, Wallet } from './components';
+import { Balance, Farm, Game, GameWidget, Menu, TaskList, ThemeToggle } from './components';
 
 import './App.css';
 
@@ -18,7 +18,8 @@ const App: React.FC = () => {
             id: uuid(),
             amount: 100,
             isCompleted: true,
-            action: () => {},
+            action: () => {
+            },
         },
         { name: 'follow twitter', id: uuid(), amount: 100, isCompleted: false, action: 'https://x.com/xyasnox' },
     ]);
@@ -42,7 +43,7 @@ const App: React.FC = () => {
                 ) : (
                     <div className="App">
                         <div className="App-header">
-                            <Wallet />
+                            {/* <Wallet /> */}
                             <ThemeToggle />
                         </div>
                         <div className="App-body">

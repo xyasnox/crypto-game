@@ -30,6 +30,7 @@ export class Enemy implements EnemyInterface {
     private readonly ctx: CanvasRenderingContext2D;
     public position: Position;
     readonly width: number;
+    private transform: number;
     private readonly height: number;
     private readonly image: HTMLImageElement;
 
@@ -40,10 +41,16 @@ export class Enemy implements EnemyInterface {
         this.width = width;
         this.height = height;
         this.image = image;
+        this.transform = 0;
     }
 
     update(speed: number, gameSpeed: number, frameTimeDelta: number, scaleRatio: number) {
         this.position.x -= speed * gameSpeed * frameTimeDelta * scaleRatio;
+        if (this.transform >= 360) {
+            this.transform = 0;
+        } else {
+            this.transform++;
+        }
     }
 
     draw() {

@@ -28,7 +28,9 @@ export const RESOURCE_INTERVAL = 70;
 export const INITIAL_TIMER = SECONDS_IN_MINUTE / 2;
 
 export const ENEMY_CONFIG = [
-    { minY: 5, maxY: 8, width: 42 / 1.5, height: 44 / 1.5, image: '../sprites/enemies/barrel.png' },
+    { minY: 4, maxY: 25, width: 41, height: 40, image: '../sprites/enemies/1.png' },
+    { minY: 6, maxY: 18, width: 42, height: 40, image: '../sprites/enemies/2.png' },
+    { minY: 2, maxY: 20, width: 42, height: 40, image: '../sprites/enemies/3.png' },
 ];
 
 export const COIN_CONFIG = {

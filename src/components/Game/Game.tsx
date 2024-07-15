@@ -44,7 +44,7 @@ let timer: number = INITIAL_TIMER;
 let isPlayerAlive = true;
 let isGameOver: boolean = false;
 
-function setInitialVars() {
+function handleSetInitialVars() {
     score = 0;
     timer = INITIAL_TIMER;
     isPlayerAlive = true;
@@ -206,7 +206,7 @@ export const Game = () => {
                     event.stopPropagation();
                     event.preventDefault();
 
-                    setInitialVars();
+                    handleSetInitialVars();
                     setScreen(Screens.home);
                 }}
             />
