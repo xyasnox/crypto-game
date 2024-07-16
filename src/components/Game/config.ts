@@ -33,6 +33,12 @@ export const ENEMY_CONFIG = [
     { minY: 2, maxY: 20, width: 42, height: 40, image: '../sprites/enemies/3.png' },
 ];
 
+export const INITIAL_GAME_STATE = {
+    score: 0,
+    isGameOver: false,
+    isPlayerAlive: true,
+};
+
 export const COIN_CONFIG = {
     minY: 5,
     maxY: MAX_JUMP_HEIGHT,

@@ -1,0 +1,23 @@
+.Friend-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+    gap: 16px;
+    color: var(--text-color);
+}
+
+.Friend-title {
+    display: inline-flex;
+    justify-content: center;
+}
+
+.Friend-text {
+    display: inline-flex;
+    gap: 2px;
+    flex-direction: column;
+}
+
+.Friend-name {
+    font-size: 14px;
+}

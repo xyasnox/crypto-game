@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import ThemeContext, { ContextValue, Themes } from '../../context/ThemeContext';
+import ThemeContext, { ThemeContextValue, Themes } from '../../context/ThemeContext';
 import { MoonIcon, SunIcon } from '../../assets';
 
 import './ThemeToggler.css';
@@ -15,7 +15,7 @@ const ThemeIcon: React.FC<{ value: Themes; onClick: () => void }> = ({ value, on
 };
 
 export const ThemeToggle: React.FC = () => {
-    const { theme, setTheme } = useContext<ContextValue>(ThemeContext);
+    const { theme, setTheme } = useContext<ThemeContextValue>(ThemeContext);
 
     return (
         <div className="Theme-container">

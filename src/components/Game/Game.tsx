@@ -1,8 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { MouseEventHandler, useContext, useEffect, useState } from 'react';
 
 import { CloseIcon } from '../../assets';
 import AppContext, { AppContextType, Screens } from '../../context/AppContext';
 import { formatGameTimer, getScaleRatio } from '../../utils';
+import { Button } from '../../ui';
+import { claimCoins } from '../../api';
 
 import {
     COIN_CONFIG,
@@ -10,6 +12,7 @@ import {
     GAME_HEIGHT,
     GAME_SPEED_START,
     GAME_WIDTH,
+    INITIAL_GAME_STATE,
     INITIAL_TIMER,
     MAX_JUMP_HEIGHT,
     MIN_JUMP_HEIGHT,
@@ -22,9 +25,6 @@ import { EnemyController, ResourceController } from './controllers';
 import { Background, EnemyObj, Player, ResourceObj } from './classes';
 
 import './Game.css';
-import GameContext, { GameContextType, INITIAL_GAME_STATE } from '../../context/GameContext';
-import { Button } from '../../ui';
-import { claimCoins } from '../../api/claimCoins';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
@@ -43,10 +43,16 @@ let previousTime: number | null = null;
 
 // Game info
 let timer = INITIAL_TIMER;
-let score = 0;
 let isPlayerAlive = true;
 let isGameOver = false;
-let isGameStarted = false;
+
+let isActive = false;
+
+interface GameInfo {
+    score: number;
+    isGameOver: boolean;
+    isPlayerAlive: boolean;
+}
 
 function setCanvasProps() {
     scaleRatio = getScaleRatio();
@@ -113,9 +119,26 @@ function createSprites() {
     });
 }
 
-export const Game = () => {
-    const { setScreen, setUserInfo } = useContext<AppContextType>(AppContext);
-    const { gameInfo, setGameInfo } = useContext<GameContextType>(GameContext);
+export const Game: React.FC = () => {
+    const { screen, setScreen, setUserInfo } = useContext<AppContextType>(AppContext);
+
+    const [gameInfo, setGameInfo] = useState<GameInfo>({
+        score: 0,
+        isGameOver: false,
+        isPlayerAlive: true,
+    });
+
+    const handleSetInitialVars = () => {
+        setGameInfo(INITIAL_GAME_STATE);
+
+        timer = INITIAL_TIMER;
+        isPlayerAlive = true;
+        isGameOver = false;
+    };
+
+    const freeze = () => {
+        isActive = false;
+    };
 
     useEffect(() => {
         canvas = document.getElementById('game') as HTMLCanvasElement;
@@ -124,6 +147,8 @@ export const Game = () => {
         setCanvasProps();
 
         const render = (currentTime?: number) => {
+            if (!isActive) return;
+
             if (!currentTime) {
                 requestAnimationFrame(render);
                 return;
@@ -135,7 +160,6 @@ export const Game = () => {
                 return;
             }
 
-            isGameStarted = true;
             const frameTimeDelta = currentTime - previousTime;
             previousTime = currentTime;
 
@@ -144,7 +168,7 @@ export const Game = () => {
             enemyController.draw();
             resourceController.draw();
 
-            if (!isGameOver && isGameStarted) {
+            if (!isGameOver && isActive) {
                 enemyController.update(GAME_SPEED_START, frameTimeDelta);
                 resourceController.update(GAME_SPEED_START, frameTimeDelta);
                 player.update(GAME_SPEED_START, frameTimeDelta);
@@ -153,7 +177,7 @@ export const Game = () => {
 
             const isEnemyHitPlayer = enemyController.checkCollision(player);
 
-            if (!isGameOver && (isEnemyHitPlayer || timer <= 0) && isGameStarted) {
+            if (!isGameOver && (isEnemyHitPlayer || timer <= 0) && isActive) {
                 if (isEnemyHitPlayer) {
                     isPlayerAlive = true;
                 }
@@ -167,11 +191,10 @@ export const Game = () => {
                 timer = 0;
             }
 
-            if (!isGameOver && resourceController.checkCollision(player) && isGameStarted) {
-                score++;
+            if (!isGameOver && resourceController.checkCollision(player) && isActive) {
                 setGameInfo((prevState) => ({
                     ...prevState,
-                    score,
+                    score: ++prevState.score,
                 }));
             }
 
@@ -191,6 +214,12 @@ export const Game = () => {
     }, []);
 
     useEffect(() => {
+        if (screen === Screens.game) {
+            isActive = true;
+        }
+    }, [screen]);
+
+    useEffect(() => {
         window.addEventListener('resize', setCanvasProps);
         window.screen.orientation?.addEventListener('change', setCanvasProps);
     }, []);
@@ -205,20 +234,14 @@ export const Game = () => {
         return () => clearInterval(timerID);
     }, []);
 
-    const handleSetInitialVars = () => {
-        setGameInfo(INITIAL_GAME_STATE);
+    const handleClaimCoins: MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
 
-        timer = INITIAL_TIMER;
-        score = 0;
-        isPlayerAlive = true;
-        isGameOver = false;
-        isGameStarted = false;
-    };
-
-    const handleClaimCoins = async () => {
-        await claimCoins({ accountId: 1234, claimed: gameInfo.score }).then(({ earned }) => {
+        claimCoins({ accountId: 1234, claimed: gameInfo.score }).then(({ earned }) => {
             setUserInfo((prevState) => ({ ...prevState, balance: prevState.balance + earned }));
         });
+        freeze();
         handleSetInitialVars();
         setScreen(Screens.home);
     };
@@ -226,8 +249,8 @@ export const Game = () => {
     return (
         <div className="Game-container">
             <div className="Game-hood">
-                <span className="Game-score">Score: {gameInfo.score}</span>
-                <span className="Game-timer">Time: {formatGameTimer(timer)}</span>
+                <div className="Game-score">Score: {gameInfo.score}</div>
+                <div className="Game-timer">Time: {formatGameTimer(timer)}</div>
                 <canvas id="game" className="Game-canvas" />
                 {gameInfo.isGameOver && (
                     <div className="Game-over">
@@ -244,6 +267,7 @@ export const Game = () => {
                     event.stopPropagation();
                     event.preventDefault();
 
+                    freeze();
                     handleSetInitialVars();
                     setScreen(Screens.home);
                 }}

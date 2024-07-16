@@ -1,5 +1,6 @@
 export { Balance } from './Balance/Balance';
 export { Farm } from './Farm/Farm';
+export { FriendList } from './FriendList/FriendList';
 export { Game } from './Game/Game';
 export { GameWidget } from './GameWidget/GameWidget';
 export { Menu } from './Menu/Menu';

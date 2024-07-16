@@ -1,4 +1,5 @@
 import { GAME_HEIGHT, GAME_WIDTH } from './components/Game/config';
+import { TouchEventHandler } from 'react';
 
 export function percentage(partialValue: number, totalValue: number) {
     return Math.round((100 * partialValue) / totalValue);
@@ -39,4 +40,9 @@ export const getScaleRatio = () => {
     } else {
         return screenHeight / GAME_HEIGHT;
     }
+};
+
+export const absorbEvent: TouchEventHandler = (event) => {
+    event.preventDefault();
+    return;
 };

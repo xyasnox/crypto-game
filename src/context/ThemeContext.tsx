@@ -5,12 +5,12 @@ export enum Themes {
     dark = 'dark',
 }
 
-export interface ContextValue {
+export interface ThemeContextValue {
     theme: Themes;
     setTheme: Dispatch<SetStateAction<Themes>>;
 }
 
-const ThemeContext = React.createContext<ContextValue>({
+const ThemeContext = React.createContext<ThemeContextValue>({
     theme: Themes.light,
     setTheme: () => null,
 });

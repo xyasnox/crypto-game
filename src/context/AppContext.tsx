@@ -1,14 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
-export interface AppContextType {
-    screen: Screens;
-    setScreen: Dispatch<SetStateAction<Screens>>;
-    userInfo: UserInfo;
-    setUserInfo: Dispatch<SetStateAction<UserInfo>>;
-    tasks: Task[];
-    setTasks: Dispatch<SetStateAction<Task[]>>;
-}
-
 export enum Screens {
     home = 'home',
     tasks = 'tasks',
@@ -30,6 +21,22 @@ export type Task = {
     action: (() => void) | string;
 };
 
+export type Friend = {
+    id: string;
+    name: string;
+};
+
+export interface AppContextType {
+    screen: Screens;
+    setScreen: Dispatch<SetStateAction<Screens>>;
+    userInfo: UserInfo;
+    setUserInfo: Dispatch<SetStateAction<UserInfo>>;
+    tasks: Task[];
+    setTasks: Dispatch<SetStateAction<Task[]>>;
+    friends: Friend[];
+    setFriends: Dispatch<SetStateAction<Friend[]>>;
+}
+
 const AppContext = React.createContext<AppContextType>({
     screen: Screens.home,
     setScreen: () => null,
@@ -40,6 +47,8 @@ const AppContext = React.createContext<AppContextType>({
     setUserInfo: () => null,
     tasks: [],
     setTasks: () => [],
+    friends: [],
+    setFriends: () => [],
 });
 
 export default AppContext;

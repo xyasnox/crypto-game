@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { v6 as uuid } from 'uuid';
 
-import AppContext, { Screens, Task, UserInfo } from './context/AppContext';
-import GameContext, { GameInfo } from './context/GameContext';
+import AppContext, { Friend, Screens, Task, UserInfo } from './context/AppContext';
 import ThemeContext, { Themes } from './context/ThemeContext';
-import { Balance, Farm, Game, GameWidget, Menu, TaskList, ThemeToggle } from './components';
+import { Balance, Farm, FriendList, Game, GameWidget, Menu, TaskList, ThemeToggle } from './components';
 
 import './App.css';
 
@@ -19,19 +18,16 @@ const App: React.FC = () => {
             id: uuid(),
             amount: 100,
             isCompleted: true,
-            action: () => {},
+            action: () => {
+            },
         },
         { name: 'follow twitter', id: uuid(), amount: 100, isCompleted: false, action: 'https://x.com/xyasnox' },
     ]);
+    const [friends, setFriends] = useState<Friend[]>([]);
     const [userInfo, setUserInfo] = useState<UserInfo>({
         balance: 0,
         remainingGames: 99,
         farmEndTimestamp: now.setSeconds(now.getSeconds() + 10).valueOf(),
-    });
-    const [gameInfo, setGameInfo] = useState<GameInfo>({
-        score: 0,
-        isGameOver: false,
-        isPlayerAlive: true,
     });
 
     useEffect(() => {
@@ -40,37 +36,34 @@ const App: React.FC = () => {
         container.setAttribute('data-theme', theme);
     }, [theme]);
 
-    console.log(gameInfo);
-
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
-            <AppContext.Provider value={{ screen, setScreen, userInfo, setUserInfo, tasks, setTasks }}>
-                {screen === Screens.game ? (
-                    <GameContext.Provider value={{ gameInfo, setGameInfo }}>
-                        <Game />
-                    </GameContext.Provider>
-                ) : (
-                    <div className="App">
-                        <div className="App-header">
-                            {/* <Wallet /> */}
-                            <ThemeToggle />
-                        </div>
-                        <div className="App-body">
-                            {screen === Screens.home && (
-                                <>
-                                    <Balance />
-                                    <GameWidget />
-                                    <Farm />
-                                </>
-                            )}
-                            {screen === Screens.tasks && <TaskList />}
-                            {screen === Screens.frens && <></>}
-                        </div>
-                        <div className="App-footer">
-                            <Menu />
-                        </div>
+            <AppContext.Provider
+                value={{
+                    screen, setScreen, userInfo, setUserInfo, tasks, setTasks, friends, setFriends
+                }}
+            >
+                <div className="App">
+                    <div className="App-header">
+                        {/* <Wallet /> */}
+                        <ThemeToggle />
                     </div>
-                )}
+                    <div className="App-body">
+                        {screen === Screens.home && (
+                            <>
+                                <Balance />
+                                <GameWidget />
+                                <Farm />
+                            </>
+                        )}
+                        {screen === Screens.tasks && <TaskList />}
+                        {screen === Screens.frens && <FriendList />}
+                    </div>
+                    <div className="App-footer">
+                        <Menu />
+                    </div>
+                    {screen === Screens.game && <Game />}
+                </div>
             </AppContext.Provider>
         </ThemeContext.Provider>
     );
