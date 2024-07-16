@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { collectFarm, updateFarmTimestamp } from '../../api';
+import { claimCoins, updateFarmTimestamp } from '../../api';
 import { MS_IN_SECOND } from '../../constants';
 import { FARM_TIME_MS } from '../../config';
 import AppContext, { AppContextType } from '../../context/AppContext';
@@ -32,7 +32,7 @@ export const Farm: React.FC = () => {
         <div
             onClick={() => {
                 if (!isCollected && !timerLeft) {
-                    collectFarm({ accountId: 1234 }).then(({ earned }) => {
+                    claimCoins({ accountId: 1234, claimed: 250 }).then(({ earned }) => {
                         setUserInfo((prevState) => ({
                             ...prevState,
                             balance: prevState.balance + earned,
