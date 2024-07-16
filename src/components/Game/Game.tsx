@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { CloseIcon, RetryIcon } from '../../assets';
+import { CloseIcon } from '../../assets';
 import AppContext, { AppContextType, Screens } from '../../context/AppContext';
-import { getScaleRatio } from '../../utils';
+import { formatGameTimer, getScaleRatio } from '../../utils';
 
 import {
     COIN_CONFIG,
@@ -19,15 +19,17 @@ import {
     TIMER_TIME,
 } from './config';
 import { EnemyController, ResourceController } from './controllers';
-import { showScore, showTimer } from './engine';
 import { Background, EnemyObj, Player, ResourceObj } from './classes';
 
 import './Game.css';
+import GameContext, { GameContextType, INITIAL_GAME_STATE } from '../../context/GameContext';
+import { Button } from '../../ui';
+import { claimCoins } from '../../api/claimCoins';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 
-// Game Objects
+// GamePast Objects
 let player: Player;
 let background: Background;
 
@@ -39,17 +41,12 @@ let resourceController: ResourceController;
 let scaleRatio: number;
 let previousTime: number | null = null;
 
-let score: number = 0;
-let timer: number = INITIAL_TIMER;
+// Game info
+let timer = INITIAL_TIMER;
+let score = 0;
 let isPlayerAlive = true;
-let isGameOver: boolean = false;
-
-function handleSetInitialVars() {
-    score = 0;
-    timer = INITIAL_TIMER;
-    isPlayerAlive = true;
-    isGameOver = false;
-}
+let isGameOver = false;
+let isGameStarted = false;
 
 function setCanvasProps() {
     scaleRatio = getScaleRatio();
@@ -116,71 +113,79 @@ function createSprites() {
     });
 }
 
-const render = (currentTime?: number) => {
-    if (!currentTime) {
-        requestAnimationFrame(render);
-        return;
-    }
-
-    if (previousTime === null) {
-        previousTime = currentTime;
-        requestAnimationFrame(render);
-        return;
-    }
-
-    const frameTimeDelta = currentTime - previousTime;
-    previousTime = currentTime;
-
-    background.draw();
-    player.draw();
-    enemyController.draw();
-    resourceController.draw();
-
-    if (!isGameOver) {
-        enemyController.update(GAME_SPEED_START, frameTimeDelta);
-        resourceController.update(GAME_SPEED_START, frameTimeDelta);
-        player.update(GAME_SPEED_START, frameTimeDelta);
-        background.update(GAME_SPEED_START, frameTimeDelta, scaleRatio);
-
-        showScore(score, { ctx, canvas, scaleRatio });
-        showTimer(timer, { ctx, canvas, scaleRatio });
-    }
-
-    const isEnemyHitPlayer = enemyController.checkCollision(player);
-
-    if (!isGameOver && (isEnemyHitPlayer || timer <= 0)) {
-        if (isEnemyHitPlayer) {
-            isPlayerAlive = false;
-        }
-        isGameOver = true;
-    }
-
-    if (!isGameOver && resourceController.checkCollision(player)) {
-        score++;
-    }
-
-    if (isGameOver) {
-        if (!isPlayerAlive) {
-            player.die(frameTimeDelta);
-        }
-
-        resourceController?.reset();
-        enemyController?.reset();
-    }
-
-    requestAnimationFrame(render);
-};
-
 export const Game = () => {
-    const { setScreen, userInfo, setUserInfo } = useContext<AppContextType>(AppContext);
-
-    const [isGameOver, setGameOver] = useState<boolean>(false);
+    const { setScreen, setUserInfo } = useContext<AppContextType>(AppContext);
+    const { gameInfo, setGameInfo } = useContext<GameContextType>(GameContext);
 
     useEffect(() => {
         canvas = document.getElementById('game') as HTMLCanvasElement;
         ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
         setCanvasProps();
+
+        const render = (currentTime?: number) => {
+            if (!currentTime) {
+                requestAnimationFrame(render);
+                return;
+            }
+
+            if (previousTime === null) {
+                previousTime = currentTime;
+                requestAnimationFrame(render);
+                return;
+            }
+
+            isGameStarted = true;
+            const frameTimeDelta = currentTime - previousTime;
+            previousTime = currentTime;
+
+            background.draw();
+            player.draw();
+            enemyController.draw();
+            resourceController.draw();
+
+            if (!isGameOver && isGameStarted) {
+                enemyController.update(GAME_SPEED_START, frameTimeDelta);
+                resourceController.update(GAME_SPEED_START, frameTimeDelta);
+                player.update(GAME_SPEED_START, frameTimeDelta);
+                background.update(GAME_SPEED_START, frameTimeDelta, scaleRatio);
+            }
+
+            const isEnemyHitPlayer = enemyController.checkCollision(player);
+
+            if (!isGameOver && (isEnemyHitPlayer || timer <= 0) && isGameStarted) {
+                if (isEnemyHitPlayer) {
+                    isPlayerAlive = true;
+                }
+                isGameOver = true;
+
+                setGameInfo((prevState) => ({
+                    ...prevState,
+                    isPlayerAlive: !isEnemyHitPlayer,
+                    isGameOver: true,
+                }));
+                timer = 0;
+            }
+
+            if (!isGameOver && resourceController.checkCollision(player) && isGameStarted) {
+                score++;
+                setGameInfo((prevState) => ({
+                    ...prevState,
+                    score,
+                }));
+            }
+
+            if (isGameOver) {
+                if (!isPlayerAlive) {
+                    player.die(frameTimeDelta);
+                }
+
+                resourceController?.reset();
+                enemyController?.reset();
+            }
+
+            requestAnimationFrame(render);
+        };
 
         render();
     }, []);
@@ -191,15 +196,48 @@ export const Game = () => {
     }, []);
 
     useEffect(() => {
-        const timerID = setInterval(() => timer--, TIMER_TIME);
+        const timerID = setInterval(() => --timer, TIMER_TIME);
+
+        if (timer <= 0) {
+            clearInterval(timerID);
+        }
 
         return () => clearInterval(timerID);
     }, []);
 
+    const handleSetInitialVars = () => {
+        setGameInfo(INITIAL_GAME_STATE);
+
+        timer = INITIAL_TIMER;
+        score = 0;
+        isPlayerAlive = true;
+        isGameOver = false;
+        isGameStarted = false;
+    };
+
+    const handleClaimCoins = async () => {
+        await claimCoins({ accountId: 1234, claimed: gameInfo.score }).then(({ earned }) => {
+            setUserInfo((prevState) => ({ ...prevState, balance: prevState.balance + earned }));
+        });
+        handleSetInitialVars();
+        setScreen(Screens.home);
+    };
+
     return (
         <div className="Game-container">
-            <canvas id="game" className="Game-canvas" />
-            {isGameOver && <span className="Game-over">Game is over, but... Retry? <RetryIcon /> </span>}
+            <div className="Game-hood">
+                <span className="Game-score">Score: {gameInfo.score}</span>
+                <span className="Game-timer">Time: {formatGameTimer(timer)}</span>
+                <canvas id="game" className="Game-canvas" />
+                {gameInfo.isGameOver && (
+                    <div className="Game-over">
+                        <span>Well done: {gameInfo.score} collected!</span>
+                        <Button onClick={handleClaimCoins} reversed>
+                            Claim
+                        </Button>
+                    </div>
+                )}
+            </div>
             <CloseIcon
                 className="Game-closeIcon"
                 onClick={(event) => {

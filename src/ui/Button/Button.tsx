@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import './Button.css';
 
@@ -20,3 +20,7 @@ export const Button: React.FC<Props> = (props) => {
         />
     );
 };
+
+export const ButtonGroup: React.FunctionComponent<PropsWithChildren> = ({ children }) => (
+    <div className="Button-group">{children}</div>
+);

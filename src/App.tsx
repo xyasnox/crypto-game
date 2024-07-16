@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { v6 as uuid } from 'uuid';
 
 import AppContext, { Screens, Task, UserInfo } from './context/AppContext';
+import GameContext, { GameInfo } from './context/GameContext';
 import ThemeContext, { Themes } from './context/ThemeContext';
 import { Balance, Farm, Game, GameWidget, Menu, TaskList, ThemeToggle } from './components';
 
@@ -18,8 +19,7 @@ const App: React.FC = () => {
             id: uuid(),
             amount: 100,
             isCompleted: true,
-            action: () => {
-            },
+            action: () => {},
         },
         { name: 'follow twitter', id: uuid(), amount: 100, isCompleted: false, action: 'https://x.com/xyasnox' },
     ]);
@@ -28,6 +28,11 @@ const App: React.FC = () => {
         remainingGames: 99,
         farmEndTimestamp: now.setSeconds(now.getSeconds() + 10).valueOf(),
     });
+    const [gameInfo, setGameInfo] = useState<GameInfo>({
+        score: 0,
+        isGameOver: false,
+        isPlayerAlive: true,
+    });
 
     useEffect(() => {
         const container = document.getElementsByTagName('html')[0];
@@ -35,11 +40,15 @@ const App: React.FC = () => {
         container.setAttribute('data-theme', theme);
     }, [theme]);
 
+    console.log(gameInfo);
+
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
             <AppContext.Provider value={{ screen, setScreen, userInfo, setUserInfo, tasks, setTasks }}>
                 {screen === Screens.game ? (
-                    <Game />
+                    <GameContext.Provider value={{ gameInfo, setGameInfo }}>
+                        <Game />
+                    </GameContext.Provider>
                 ) : (
                     <div className="App">
                         <div className="App-header">

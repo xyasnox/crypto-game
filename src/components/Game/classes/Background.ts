@@ -36,9 +36,19 @@ export class Background implements BackgroundInterface {
     }
 
     draw() {
-        this.ctx.drawImage(this.background.image, this.background.x, this.background.y, this.background.width, this.background.height);
         this.ctx.drawImage(
-            this.background.image, this.background.x + this.background.width, this.background.y, this.background.width, this.background.height
+            this.background.image,
+            this.background.x,
+            this.background.y,
+            this.background.width,
+            this.background.height,
+        );
+        this.ctx.drawImage(
+            this.background.image,
+            this.background.x + this.background.width,
+            this.background.y,
+            this.background.width,
+            this.background.height,
         );
 
         if (this.background.x < -this.background.width) {
@@ -49,6 +59,4 @@ export class Background implements BackgroundInterface {
     update(gameSpeed: number, frameTimeDelta: number, scaleRatio: number) {
         this.background.x -= gameSpeed * frameTimeDelta * scaleRatio;
     }
-
-    
 }

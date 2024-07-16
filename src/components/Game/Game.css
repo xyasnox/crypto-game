@@ -6,6 +6,24 @@
     height: 100vh;
 }
 
+.Game-hood {
+    position: relative;
+}
+
+.Game-score {
+    position: absolute;
+    left: 16px;
+    transform: translateY(calc(-100% - 16px));
+    text-align: left;
+}
+
+.Game-timer {
+    position: absolute;
+    right: 16px;
+    transform: translateY(calc(-100% - 16px));
+    text-align: right;
+}
+
 .Game-canvas {
     image-rendering: pixelated;
 }
@@ -21,6 +39,17 @@
 }
 
 .Game-over {
+    display: flex;
+    flex-direction: column;
     position: absolute;
-    color: var(--text-color);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: var(--background-color);
+    box-shadow: 0 0 20px 40px var(--background-color);
+    text-align: center;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    gap: 10px;
 }

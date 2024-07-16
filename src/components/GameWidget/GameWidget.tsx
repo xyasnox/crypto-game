@@ -23,7 +23,7 @@ export const GameWidget: React.FC = () => {
                 onClick={() => {
                     setUserInfo((prevState) => ({
                         ...prevState,
-                        remainingGames: --prevState.remainingGames,
+                        remainingGames: prevState.remainingGames - 1,
                     }));
                     setScreen(Screens.game);
                 }}

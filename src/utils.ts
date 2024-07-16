@@ -16,7 +16,7 @@ export function formatTimestamp(timestamp?: number): string | null {
 }
 
 export function formatGameTimer(time?: number): string | null {
-    if (!time) return null;
+    if (typeof time === 'undefined') return null;
     if (time <= 0) return `00:00`;
 
     const minutes = Math.floor(time / 60);

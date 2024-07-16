@@ -1,3 +1,9 @@
+.Button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .Button {
     display: inline-block;
     outline: 0;
