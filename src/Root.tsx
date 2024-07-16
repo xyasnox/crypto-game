@@ -8,6 +8,7 @@ import { Friend, Task, UserInfo } from './typings';
 import { Loader } from './ui';
 
 import './Root.css';
+import { ToastContextProvider } from './context/ToastContext';
 
 const Root: React.FC = () => {
     const [isLoading, setLoading] = useState<boolean>(true);
@@ -47,33 +48,35 @@ const Root: React.FC = () => {
                     screen, setScreen, userInfo, setUserInfo, tasks, setTasks, friends, setFriends
                 }}
             >
-                {isLoading ? (
-                    <div className="App-loading">
-                        <Loader />
-                    </div>
-                ) : (
-                    <div className="App">
-                        <div className="App-header">
-                            {/* <Wallet /> */}
-                            <ThemeToggle />
+                <ToastContextProvider>
+                    {isLoading ? (
+                        <div className="App-loading">
+                            <Loader />
                         </div>
-                        <div className="App-body">
-                            {screen === Screens.home && (
-                                <>
-                                    <Balance />
-                                    <GameWidget />
-                                    <Farm />
-                                </>
-                            )}
-                            {screen === Screens.tasks && <TaskList />}
-                            {screen === Screens.frens && <FriendList />}
+                    ) : (
+                        <div className="App">
+                            <div className="App-header">
+                                {/* <Wallet /> */}
+                                <ThemeToggle />
+                            </div>
+                            <div className="App-body">
+                                {screen === Screens.home && (
+                                    <>
+                                        <Balance />
+                                        <GameWidget />
+                                        <Farm />
+                                    </>
+                                )}
+                                {screen === Screens.tasks && <TaskList />}
+                                {screen === Screens.frens && <FriendList />}
+                            </div>
+                            <div className="App-footer">
+                                <Menu />
+                            </div>
+                            {screen === Screens.game && <Game />}
                         </div>
-                        <div className="App-footer">
-                            <Menu />
-                        </div>
-                        {screen === Screens.game && <Game />}
-                    </div>
-                )}
+                    )}
+                </ToastContextProvider>
             </AppContext.Provider>
         </ThemeContext.Provider>
     );

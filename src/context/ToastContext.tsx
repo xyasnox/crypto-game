@@ -1,15 +1,72 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, {
+    createContext,
+    Dispatch,
+    PropsWithChildren,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useState
+} from 'react';
+import ReactDOM from 'react-dom';
 
-export type Toast = {
-    value: React.ReactNode;
-    type: 'error' | 'info';
-} | null
+import { Toast } from '../ui/Toast/Toast';
 
-export interface ToastContextType {
-    toast: Toast;
-    setToast: Dispatch<SetStateAction<Toast>>;
+export type ToastParams = React.ReactNode;
+
+interface ToastContextType {
+    triggerToast: Dispatch<SetStateAction<ToastParams>>;
 }
 
-const ToastContext = React.createContext<ToastContextType>({ toast: null, setToast: () => null });
+interface ToastProviderProps extends PropsWithChildren {
+    duration?: number;
+}
 
-export default ToastContext;
+const Portal: React.FC<PropsWithChildren> = ({ children }) => {
+    const [container, setContainer] = useState<HTMLElement>();
+
+    useEffect(() => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        setContainer(container);
+
+        return () => {
+            document.body.removeChild(container);
+        };
+    }, []);
+
+    return container ? ReactDOM.createPortal(children, container) : null;
+};
+
+const ToastContext = createContext<ToastContextType>({
+    triggerToast: () => null,
+});
+
+export const ToastContextProvider: React.FC<ToastProviderProps> = ({ duration = 5000, children }) => {
+    const [toast, setToast] = useState<ToastParams>(null);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (toast) {
+                setToast(null);
+            }
+        }, duration);
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [toast, duration]);
+
+    return (
+        <ToastContext.Provider value={{ triggerToast: setToast }}>
+            {children}
+            <Portal>
+                <Toast show={!!toast}>
+                    {toast}
+                </Toast>
+            </Portal>
+        </ToastContext.Provider>
+    );
+};
+
+export const useToastContext = () => useContext(ToastContext);

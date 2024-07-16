@@ -1,12 +1,15 @@
 import React, { useContext } from 'react';
 
 import AppContext from '../../context/AppContext';
+import { useToastContext } from '../../context/ToastContext';
+import { Button, ButtonGroup } from '../../ui';
 
 import './FriendList.css';
-import { Button } from '../../ui';
 
 export const FriendList: React.FC = () => {
     const { friends } = useContext(AppContext);
+
+    const { triggerToast } = useToastContext();
 
     return (
         <div className="Friend-container">
@@ -18,9 +21,16 @@ export const FriendList: React.FC = () => {
                     <span className="Friend-name">{name}</span>
                 </div>
             ))}
-            <Button onClick={() => {
-                navigator.clipboard.writeText('link here').catch((error) => error);
-            }} reversed>Invite</Button>
+            <ButtonGroup>
+                <Button onClick={() => {
+                    navigator.clipboard.writeText('link here').catch((error) => error);
+                }} reversed>Invite</Button>
+                Or
+                <Button onClick={() => {
+                    navigator.clipboard.writeText('link here').catch((error) => error);
+                    triggerToast('Link copied!');
+                }} reversed>Copy invite link</Button>
+            </ButtonGroup>
         </div>
     );
 };

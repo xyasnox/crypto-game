@@ -16,7 +16,7 @@ export const Button: React.FC<Props> = ({ children, disabled, reversed, loading,
             disabled={disabled || loading}
             className={cn(
                 'Button',
-                disabled && 'Button-disabled',
+                (disabled || loading) && 'Button-disabled',
                 reversed && 'Button-reverse',
                 className,
             )}

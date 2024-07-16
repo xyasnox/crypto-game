@@ -1,0 +1,28 @@
+.Toast-container {
+    z-index: 1041;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    justify-content: center;
+    width: 100%
+}
+
+.Toast-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-width: 128px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    max-width: calc(100% - 24px);
+    gap: 10px;
+    background: var(--element-color);
+    color: var(--element-text-color);
+}
+
+.Toast-icon {
+    flex-shrink: 0;
+}

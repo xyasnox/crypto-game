@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 
 import { CardIcon } from '../../assets';
 import AppContext, { AppContextType, Screens } from '../../context/AppContext';
-import ToastContext, { ToastContextType } from '../../context/ToastContext';
 import { Button } from '../../ui';
 
 import './GameWidget.css';
@@ -13,7 +12,6 @@ export const GameWidget: React.FC = () => {
         setUserInfo,
         setScreen,
     } = useContext<AppContextType>(AppContext);
-    const { setToast } = useContext<ToastContextType>(ToastContext);
 
     return (
         <div className="Widget-container">
@@ -22,17 +20,13 @@ export const GameWidget: React.FC = () => {
                 {remainingGames}
             </span>
             <Button
+                disabled={remainingGames <= 0}
                 onClick={() => {
-                    if (remainingGames > 0) {
-                        setUserInfo((prevState) => ({
-                            ...prevState,
-                            remainingGames: prevState.remainingGames - 1,
-                        }));
-                        setScreen(Screens.game);
-                        return;
-                    }
-                    
-                    setToast({ value: 'No more bills', type: 'error' });
+                    setUserInfo((prevState) => ({
+                        ...prevState,
+                        remainingGames: prevState.remainingGames - 1,
+                    }));
+                    setScreen(Screens.game);
                 }}
             >
                 Start

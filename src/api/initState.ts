@@ -37,7 +37,7 @@ export const initState = (args: CollectRequest): Promise<CollectResponse> => {
             friends: [],
             userInfo: {
                 balance: 0,
-                remainingGames: 99,
+                remainingGames: 0,
                 farmEndTimestamp: now.setSeconds(now.getSeconds() + 10).valueOf(),
             },
         }), 2000)

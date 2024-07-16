@@ -7,5 +7,5 @@ export type CollectResponse = {
 };
 
 export const collectFarm = (args: CollectRequest): Promise<CollectResponse> => {
-    return Promise.resolve({ earned: 50 });
+    return Promise.resolve({ earned: 250 });
 };

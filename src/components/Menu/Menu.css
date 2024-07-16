@@ -12,6 +12,7 @@
     padding: 4px;
     opacity: 0.5;
     color: var(--text-color);
+    cursor: pointer;
 }
 
 .Menu-current {

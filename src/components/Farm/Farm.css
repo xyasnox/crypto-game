@@ -13,6 +13,7 @@
     color: var(--element-text-color);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .Farm-container::after {

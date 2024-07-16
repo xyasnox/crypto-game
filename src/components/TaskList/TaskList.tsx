@@ -45,7 +45,7 @@ export const TaskList: React.FC = () => {
                                             balance: prevState.balance + amount,
                                         }));
                                         setLoadingTaskId(undefined);
-                                    }, MS_IN_SECOND * 30);
+                                    }, MS_IN_SECOND * 5);
                                     return;
                                 }
 

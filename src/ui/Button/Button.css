@@ -1,6 +1,7 @@
 .Button-group {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -10,7 +11,7 @@
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
-    height: 38px;
+    min-height: 38px;
     padding: 8px 24px;
     border-radius: 50px;
     border: 0;
@@ -26,4 +27,5 @@
 
 .Button-disabled {
     opacity: 0.5;
+    cursor: auto;
 }
