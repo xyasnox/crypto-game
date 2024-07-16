@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { CheckIcon } from '../../assets';
 import AppContext from '../../context/AppContext';
@@ -9,6 +9,8 @@ import './TaskList.css';
 
 export const TaskList: React.FC = () => {
     const { tasks, setTasks, setUserInfo } = useContext(AppContext);
+
+    const [loadingTaskId, setLoadingTaskId] = useState<string>();
 
     return (
         <div className="Task-container">
@@ -21,9 +23,11 @@ export const TaskList: React.FC = () => {
                     </span>
                     {!isCompleted ? (
                         <Button
+                            loading={id === loadingTaskId}
                             reversed
                             onClick={() => {
                                 if (typeof action === 'string') {
+                                    setLoadingTaskId(id);
                                     window.open(action);
 
                                     setTimeout(() => {
@@ -40,6 +44,7 @@ export const TaskList: React.FC = () => {
                                             ...prevState,
                                             balance: prevState.balance + amount,
                                         }));
+                                        setLoadingTaskId(undefined);
                                     }, MS_IN_SECOND * 30);
                                     return;
                                 }

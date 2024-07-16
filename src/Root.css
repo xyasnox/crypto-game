@@ -4,6 +4,13 @@
     height: 100dvh;
 }
 
+.App-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+}
+
 .App-header {
     display: flex;
     flex-direction: column;

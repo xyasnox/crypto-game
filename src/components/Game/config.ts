@@ -1,6 +1,6 @@
 import { MS_IN_SECOND, SECONDS_IN_MINUTE } from '../../constants';
 
-export const GAME_SPEED_START = 0.5;
+export const GAME_SPEED_START = 0.4;
 
 export const GAME_WIDTH = 375;
 export const GAME_HEIGHT = 200;
@@ -15,9 +15,6 @@ export const ENEMY_INTERVAL_MAX = 2500;
 export const OBJECT_SPEED = 0.6;
 
 export const TIMER_TIME = MS_IN_SECOND;
-
-export const BASE_PADDING = 10;
-export const STANDARD_FONT_SIZE = 16;
 
 export const GRAVITY = 0.25;
 export const JUMP_SPEED = 0.25;

@@ -1,0 +1,39 @@
+:root {
+    --size: 16px;
+}
+
+.Loader {
+    width: var(--size);
+    height: var(--size);
+    position: relative;
+    border: calc(var(--size) / 8) solid var(--text-color);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    animation: rotation 1s linear infinite
+}
+
+.Loader-reversed {
+    border: calc(var(--size) / 8) solid var(--element-text-color);
+    border-bottom-color: transparent;
+}
+
+.Loader-s {
+    --size: 16px;
+}
+
+.Loader-m {
+    --size: 32px;
+}
+
+.Loader-l {
+    --size: 48px;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

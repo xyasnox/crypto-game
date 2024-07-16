@@ -260,6 +260,10 @@ export const Game: React.FC = () => {
                         </Button>
                     </div>
                 )}
+                <div className="Game-faq">
+                    <span>Tap or press "Space" to jump</span>
+                    <span>longer = higher</span>
+                </div>
             </div>
             <CloseIcon
                 className="Game-closeIcon"

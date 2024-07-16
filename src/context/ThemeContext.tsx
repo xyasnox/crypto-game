@@ -10,9 +10,21 @@ export interface ThemeContextValue {
     setTheme: Dispatch<SetStateAction<Themes>>;
 }
 
+export const themeConverter = (theme: WebApp['colorScheme']) => {
+    switch (theme) {
+        case Themes.light:
+            return Themes.light;
+        case Themes.dark:
+            return Themes.dark;
+        default:
+            return Themes.light;
+    }
+};
+
 const ThemeContext = React.createContext<ThemeContextValue>({
     theme: Themes.light,
     setTheme: () => null,
 });
+
 
 export default ThemeContext;

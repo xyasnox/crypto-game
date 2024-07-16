@@ -2,22 +2,27 @@ import cn from 'classnames';
 import React, { PropsWithChildren } from 'react';
 
 import './Button.css';
+import { Loader } from '../Loader/Loader';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     reversed?: boolean;
+    loading?: boolean;
 }
 
-export const Button: React.FC<Props> = (props) => {
+export const Button: React.FC<Props> = ({ children, disabled, reversed, loading, className, ...props }) => {
     return (
         <button
             {...props}
+            disabled={disabled || loading}
             className={cn(
                 'Button',
-                props.disabled && 'Button-disabled',
-                props?.reversed && 'Button-reverse',
-                props.className,
+                disabled && 'Button-disabled',
+                reversed && 'Button-reverse',
+                className,
             )}
-        />
+        >
+            {loading ? <Loader reversed={reversed} size="s" /> : children}
+        </button>
     );
 };
 

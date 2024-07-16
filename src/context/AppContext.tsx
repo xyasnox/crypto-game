@@ -1,30 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
+import { Friend, Task, UserInfo } from '../typings';
+
 export enum Screens {
     home = 'home',
     tasks = 'tasks',
     frens = 'frens',
     game = 'game',
 }
-
-export interface UserInfo {
-    balance: number;
-    remainingGames: number;
-    farmEndTimestamp?: number;
-}
-
-export type Task = {
-    id: string;
-    name: string;
-    isCompleted: boolean;
-    amount: number;
-    action: (() => void) | string;
-};
-
-export type Friend = {
-    id: string;
-    name: string;
-};
 
 export interface AppContextType {
     screen: Screens;
