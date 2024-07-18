@@ -15,31 +15,34 @@ export type CollectResponse = {
 export const initState = (args: CollectRequest): Promise<CollectResponse> => {
     const now = new Date();
 
-    return new Promise((resolve) => (
-        setTimeout(() => resolve({
-            tasks: [
-                {
-                    name: 'Connect wallet',
-                    id: uuid(),
-                    amount: 300,
-                    isCompleted: true,
-                    action: () => {
+    return new Promise((resolve) =>
+        setTimeout(
+            () =>
+                resolve({
+                    tasks: [
+                        {
+                            name: 'Connect wallet',
+                            id: uuid(),
+                            amount: 300,
+                            isCompleted: true,
+                            action: () => {},
+                        },
+                        {
+                            name: 'follow twitter',
+                            id: uuid(),
+                            amount: 300,
+                            isCompleted: true,
+                            action: 'https://x.com/xyasnox',
+                        },
+                    ],
+                    friends: [],
+                    userInfo: {
+                        balance: 0,
+                        remainingGames: 3,
+                        farmEndTimestamp: now.setSeconds(now.getSeconds() + 10).valueOf(),
                     },
-                },
-                {
-                    name: 'follow twitter',
-                    id: uuid(),
-                    amount: 300,
-                    isCompleted: false,
-                    action: 'https://x.com/xyasnox'
-                },
-            ],
-            friends: [],
-            userInfo: {
-                balance: 0,
-                remainingGames: 0,
-                farmEndTimestamp: now.setSeconds(now.getSeconds() + 10).valueOf(),
-            },
-        }), 2000)
-    ));
+                }),
+            2000,
+        ),
+    );
 };

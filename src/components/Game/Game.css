@@ -3,8 +3,8 @@
     align-items: center;
     justify-content: center;
     position: fixed;
-    height: 100 dvh;
-    width: 100vw;
+    height: 100dvh;
+    width: 100dvw;
     background: var(--background-color);
     -webkit-touch-callout: none; /* Safari */
     -webkit-user-select: none; /* Chrome */
