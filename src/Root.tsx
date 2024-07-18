@@ -45,7 +45,14 @@ const Root: React.FC = () => {
         <ThemeContext.Provider value={{ theme, setTheme }}>
             <AppContext.Provider
                 value={{
-                    screen, setScreen, userInfo, setUserInfo, tasks, setTasks, friends, setFriends
+                    screen,
+                    setScreen,
+                    userInfo,
+                    setUserInfo,
+                    tasks,
+                    setTasks,
+                    friends,
+                    setFriends,
                 }}
             >
                 <ToastContextProvider>

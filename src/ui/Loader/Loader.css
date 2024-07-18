@@ -9,7 +9,7 @@
     border: calc(var(--size) / 8) solid var(--text-color);
     border-bottom-color: transparent;
     border-radius: 50%;
-    animation: rotation 1s linear infinite
+    animation: rotation 1s linear infinite;
 }
 
 .Loader-reversed {

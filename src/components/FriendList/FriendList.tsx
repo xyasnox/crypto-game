@@ -22,14 +22,24 @@ export const FriendList: React.FC = () => {
                 </div>
             ))}
             <ButtonGroup>
-                <Button onClick={() => {
-                    navigator.clipboard.writeText('link here').catch((error) => error);
-                }} reversed>Invite</Button>
+                <Button
+                    onClick={() => {
+                        navigator.clipboard.writeText('link here').catch((error) => error);
+                    }}
+                    reversed
+                >
+                    Invite
+                </Button>
                 Or
-                <Button onClick={() => {
-                    navigator.clipboard.writeText('link here').catch((error) => error);
-                    triggerToast('Link copied!');
-                }} reversed>Copy invite link</Button>
+                <Button
+                    onClick={() => {
+                        navigator.clipboard.writeText('link here').catch((error) => error);
+                        triggerToast('Link copied!');
+                    }}
+                    reversed
+                >
+                    Copy invite link
+                </Button>
             </ButtonGroup>
         </div>
     );

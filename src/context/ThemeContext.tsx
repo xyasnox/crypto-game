@@ -26,5 +26,4 @@ const ThemeContext = React.createContext<ThemeContextValue>({
     setTheme: () => null,
 });
 
-
 export default ThemeContext;

@@ -9,7 +9,5 @@ interface Props {
 }
 
 export const Loader: React.FC<Props> = ({ reversed, size = 'l' }) => {
-    return (
-        <div className={cn('Loader', reversed && 'Loader-reversed', size && `Loader-${size}`)} />
-    );
+    return <div className={cn('Loader', reversed && 'Loader-reversed', size && `Loader-${size}`)} />;
 };

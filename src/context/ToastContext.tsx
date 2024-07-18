@@ -5,7 +5,7 @@ import React, {
     SetStateAction,
     useContext,
     useEffect,
-    useState
+    useState,
 } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -61,9 +61,7 @@ export const ToastContextProvider: React.FC<ToastProviderProps> = ({ duration = 
         <ToastContext.Provider value={{ triggerToast: setToast }}>
             {children}
             <Portal>
-                <Toast show={!!toast}>
-                    {toast}
-                </Toast>
+                <Toast show={!!toast}>{toast}</Toast>
             </Portal>
         </ToastContext.Provider>
     );
