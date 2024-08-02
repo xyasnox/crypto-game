@@ -1,18 +1,24 @@
 export interface UserInfo {
+    accountId?: number;
+    userId: number;
     balance: number;
     remainingGames: number;
     farmEndTimestamp?: number;
 }
 
+export enum TaskStatus {
+    Completed,
+    Active,
+}
+
 export type Task = {
-    id: string;
+    id: number;
     name: string;
-    isCompleted: boolean;
-    amount: number;
-    action: (() => void) | string;
+    status: TaskStatus;
+    reward: number;
 };
 
 export type Friend = {
-    id: string;
+    accountId: number;
     name: string;
 };

@@ -1,19 +1,21 @@
 import cn from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { claimCoins, updateFarmTimestamp } from '../../api';
+import { claim } from '../../api';
 import { MS_IN_SECOND } from '../../constants';
 import { FARM_TIME_MS } from '../../config';
 import AppContext, { AppContextType } from '../../context/AppContext';
+import { useToastContext } from '../../context/ToastContext';
 import { formatTimestamp, percentage } from '../../utils';
 
 import './Farm.css';
 
 export const Farm: React.FC = () => {
     const {
-        userInfo: { farmEndTimestamp },
+        userInfo: { farmEndTimestamp, userId },
         setUserInfo,
     } = useContext<AppContextType>(AppContext);
+    const { triggerToast } = useToastContext();
 
     const now = new Date().valueOf();
 
@@ -32,22 +34,23 @@ export const Farm: React.FC = () => {
         <div
             onClick={() => {
                 if (!isCollected && !timerLeft) {
-                    claimCoins({ accountId: 1234, claimed: 250 }).then(({ earned }) => {
+                    claim({ userId, reward: 250 }).then(({ balance, claimed }) => {
                         setUserInfo((prevState) => ({
                             ...prevState,
-                            balance: prevState.balance + earned,
+                            balance,
                         }));
+                        triggerToast(`Collected ${claimed}`);
                         setCollected(true);
                     });
                 } else if (!timerLeft) {
-                    updateFarmTimestamp({ accountId: 1234 }).then(({ farmEndTimestamp }) => {
-                        setUserInfo((prevState) => ({
-                            ...prevState,
-                            farmEndTimestamp,
-                        }));
-                        setValue(farmEndTimestamp);
-                        setCollected(false);
-                    });
+                    // updateFarmTimestamp({ accountId }).then(({ farmEndTimestamp }) => {
+                    //     setUserInfo((prevState) => ({
+                    //         ...prevState,
+                    //         farmEndTimestamp,
+                    //     }));
+                    //     setValue(farmEndTimestamp);
+                    //     setCollected(false);
+                    // });
                 }
             }}
             style={

@@ -1,3 +1,4 @@
-export { claimCoins } from './claimCoins';
-export { initState } from './initState';
-export { updateFarmTimestamp } from './updateFarmTimestamp';
+export { claim } from './claim';
+export { claimTask } from './claimTask';
+export { getFriends } from './getFriends';
+export { getOrCreate } from './getOrCreate';

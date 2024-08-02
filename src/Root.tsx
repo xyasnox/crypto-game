@@ -1,37 +1,48 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { initState } from './api';
+import { getFriends, getOrCreate } from './api';
 import AppContext, { Screens } from './context/AppContext';
 import ThemeContext, { themeConverter, Themes } from './context/ThemeContext';
+import { ToastContextProvider } from './context/ToastContext';
 import { Balance, Farm, FriendList, Game, GameWidget, Menu, TaskList, ThemeToggle } from './components';
 import { Friend, Task, UserInfo } from './typings';
 import { Loader } from './ui';
 
 import './Root.css';
-import { ToastContextProvider } from './context/ToastContext';
 
 const Root: React.FC = () => {
     const [isLoading, setLoading] = useState<boolean>(true);
-
     const [screen, setScreen] = useState<Screens>(Screens.home);
     const [theme, setTheme] = useState<Themes>(Themes.light);
     const [tasks, setTasks] = useState<Task[]>([]);
     const [friends, setFriends] = useState<Friend[]>([]);
     const [userInfo, setUserInfo] = useState<UserInfo>({
+        userId: 0,
         balance: 0,
         remainingGames: 0,
     });
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const webApp = window.Telegram.WebApp;
         const theme = themeConverter(webApp.colorScheme);
 
-        initState({ accountId: 1234 }).then(({ tasks, friends, userInfo }) => {
-            setFriends(friends);
-            setTasks(tasks);
-            setUserInfo(userInfo);
-            setLoading(false);
-        });
+        const user = window.Telegram.WebApp.initDataUnsafe.user;
+
+        const accountId: number | undefined = user?.id;
+        const fullName: string = user ? `${user.first_name} ${user.last_name}` : '';
+        const login: string = user?.username || '';
+        const invitedBy = new URLSearchParams(window.location.search).get('invitedBy');
+
+        webApp.disableVerticalSwipes();
+
+        getOrCreate({ accountId, fullName, login, invitedBy: invitedBy ? Number(invitedBy) : 0 }).then(
+            ({ tasks, userInfo }) => {
+                setTasks(tasks);
+                setUserInfo({ ...userInfo, accountId });
+                setLoading(false);
+            },
+        );
+        getFriends({ accountId, limit: 0, offset: 0 }).then(({ friends }) => setFriends(friends));
         setTheme(theme);
     }, []);
 

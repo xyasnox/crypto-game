@@ -17,7 +17,7 @@ export const GameWidget: React.FC = () => {
         <div className="Widget-container">
             <span className="Widget-text">
                 <CardIcon className="Widget-icon" />
-                {remainingGames}
+                Games: {remainingGames}
             </span>
             <Button
                 disabled={remainingGames <= 0}

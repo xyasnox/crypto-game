@@ -1,5 +1,4 @@
 import { GAME_HEIGHT, GAME_WIDTH } from './components/Game/config';
-import { TouchEventHandler } from 'react';
 
 export function percentage(partialValue: number, totalValue: number) {
     return Math.round((100 * partialValue) / totalValue);
@@ -42,7 +41,18 @@ export const getScaleRatio = () => {
     }
 };
 
-export const absorbEvent: TouchEventHandler = (event) => {
-    event.preventDefault();
-    return;
-};
+export async function fetchPost<Req, Res>(url: string, args?: Req): Promise<Res> {
+    let headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+
+    return fetch(`http://localhost:8080/api/v1/${url}`, {
+        method: 'POST',
+        body: args ? JSON.stringify(args) : undefined,
+        headers,
+    })
+        .then((res) => res.json())
+        .then((response: Res) => response)
+        .catch();
+}

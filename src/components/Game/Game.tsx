@@ -4,7 +4,7 @@ import { CloseIcon } from '../../assets';
 import AppContext, { AppContextType, Screens } from '../../context/AppContext';
 import { formatGameTimer, getScaleRatio } from '../../utils';
 import { Button } from '../../ui';
-import { claimCoins } from '../../api';
+import { claim } from '../../api';
 
 import {
     COIN_CONFIG,
@@ -25,6 +25,7 @@ import { EnemyController, ResourceController } from './controllers';
 import { Background, EnemyObj, Player, ResourceObj } from './classes';
 
 import './Game.css';
+import { useToastContext } from '../../context/ToastContext';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
@@ -120,7 +121,13 @@ function createSprites() {
 }
 
 export const Game: React.FC = () => {
-    const { screen, setScreen, setUserInfo } = useContext<AppContextType>(AppContext);
+    const {
+        screen,
+        setScreen,
+        userInfo: { userId },
+        setUserInfo,
+    } = useContext<AppContextType>(AppContext);
+    const { triggerToast } = useToastContext();
 
     const [gameInfo, setGameInfo] = useState<GameInfo>({
         score: 0,
@@ -238,8 +245,9 @@ export const Game: React.FC = () => {
         event.stopPropagation();
         event.preventDefault();
 
-        claimCoins({ accountId: 1234, claimed: gameInfo.score }).then(({ earned }) => {
-            setUserInfo((prevState) => ({ ...prevState, balance: prevState.balance + earned }));
+        claim({ userId, reward: gameInfo.score }).then(({ balance, claimed }) => {
+            setUserInfo((prevState) => ({ ...prevState, balance }));
+            triggerToast(`Collected ${claimed}`);
         });
         freeze();
         handleSetInitialVars();

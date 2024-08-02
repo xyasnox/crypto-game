@@ -6,25 +6,35 @@ import { Button, ButtonGroup } from '../../ui';
 
 import './FriendList.css';
 
+const TEXT: string =
+    'LunarCoin: Your first crypto wealth. Join, share, and earn airdrops!\n🎁 +100k coin as a first-time gift';
+
 export const FriendList: React.FC = () => {
-    const { friends } = useContext(AppContext);
+    const {
+        friends,
+        userInfo: { userId },
+    } = useContext(AppContext);
 
     const { triggerToast } = useToastContext();
+
+    const friendUrl = `https://t.me/theLunarCoinBot/LunarCoin?invitedBy=${userId}`;
 
     return (
         <div className="Friend-container">
             <span className="Friend-title">
                 {friends.length ? 'Frens' : 'Frens list is empty. Invite someone, huh?'}
             </span>
-            {friends.map(({ id, name }) => (
-                <div className="Friend-item" key={id}>
+            {friends.map(({ accountId, name }) => (
+                <div className="Friend-item" key={accountId}>
                     <span className="Friend-name">{name}</span>
                 </div>
             ))}
             <ButtonGroup>
                 <Button
                     onClick={() => {
-                        navigator.clipboard.writeText('link here').catch((error) => error);
+                        window.Telegram.WebApp.openTelegramLink(
+                            `https://t.me/share/url?url=${friendUrl}&text="${TEXT}"`,
+                        );
                     }}
                     reversed
                 >
@@ -33,7 +43,7 @@ export const FriendList: React.FC = () => {
                 Or
                 <Button
                     onClick={() => {
-                        navigator.clipboard.writeText('link here').catch((error) => error);
+                        navigator.clipboard.writeText(friendUrl).catch((error) => error);
                         triggerToast('Link copied!');
                     }}
                     reversed

@@ -24,6 +24,7 @@ const AppContext = React.createContext<AppContextType>({
     screen: Screens.home,
     setScreen: () => null,
     userInfo: {
+        userId: 0,
         balance: 0,
         remainingGames: 0,
     },
