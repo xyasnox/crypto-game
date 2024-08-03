@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
-import { Friend, Task, UserInfo } from '../typings';
+import { Friend, InitialUserInfo, Task } from '../typings';
 
 export enum Screens {
     home = 'home',
@@ -12,8 +12,8 @@ export enum Screens {
 export interface AppContextType {
     screen: Screens;
     setScreen: Dispatch<SetStateAction<Screens>>;
-    userInfo: UserInfo;
-    setUserInfo: Dispatch<SetStateAction<UserInfo>>;
+    userInfo: InitialUserInfo;
+    setUserInfo: Dispatch<SetStateAction<InitialUserInfo>>;
     tasks: Task[];
     setTasks: Dispatch<SetStateAction<Task[]>>;
     friends: Friend[];

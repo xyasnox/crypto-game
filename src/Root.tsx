@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import { getFriends, getOrCreate } from './api';
 import AppContext, { Screens } from './context/AppContext';
 import ThemeContext, { themeConverter, Themes } from './context/ThemeContext';
 import { ToastContextProvider } from './context/ToastContext';
 import { Balance, Farm, FriendList, Game, GameWidget, Menu, TaskList, ThemeToggle } from './components';
-import { Friend, Task, UserInfo } from './typings';
+import { Friend, InitialUserInfo, Task } from './typings';
 import { Loader } from './ui';
 
 import './Root.css';
@@ -16,13 +16,13 @@ const Root: React.FC = () => {
     const [theme, setTheme] = useState<Themes>(Themes.light);
     const [tasks, setTasks] = useState<Task[]>([]);
     const [friends, setFriends] = useState<Friend[]>([]);
-    const [userInfo, setUserInfo] = useState<UserInfo>({
+    const [userInfo, setUserInfo] = useState<InitialUserInfo>({
         userId: 0,
         balance: 0,
         remainingGames: 0,
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const webApp = window.Telegram.WebApp;
         const theme = themeConverter(webApp.colorScheme);
 
@@ -35,14 +35,14 @@ const Root: React.FC = () => {
 
         webApp.disableVerticalSwipes();
 
-        getOrCreate({ accountId, fullName, login, invitedBy: invitedBy ? Number(invitedBy) : 0 }).then(
+        getOrCreate({ accountId, fullName, login, invitedBy: invitedBy ? Number(invitedBy) : null }).then(
             ({ tasks, userInfo }) => {
                 setTasks(tasks);
-                setUserInfo({ ...userInfo, accountId });
+                setUserInfo({ ...userInfo, userId: userInfo.id });
                 setLoading(false);
             },
         );
-        getFriends({ accountId, limit: 0, offset: 0 }).then(({ friends }) => setFriends(friends));
+        getFriends({ accountId, limit: 10, offset: 0 }).then(({ friends }) => setFriends(friends));
         setTheme(theme);
     }, []);
 

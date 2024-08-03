@@ -46,11 +46,15 @@ export async function fetchPost<Req, Res>(url: string, args?: Req): Promise<Res>
 
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
+    headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+    headers.append('Access-Control-Allow-Credentials', 'true');
+    headers.append('Access-Control-Request-Method', 'PUT, GET, HEAD, POST, DELETE, OPTIONS');
 
     return fetch(`http://localhost:8080/api/v1/${url}`, {
         method: 'POST',
         body: args ? JSON.stringify(args) : undefined,
         headers,
+        credentials: 'include',
     })
         .then((res) => res.json())
         .then((response: Res) => response)

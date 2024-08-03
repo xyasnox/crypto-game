@@ -7,7 +7,7 @@ export type GetOrCreateRequest = {
     accountId?: number;
     login: string;
     fullName: string;
-    invitedBy?: number;
+    invitedBy?: number | null;
 };
 
 export type GetOrCreateResponse = {

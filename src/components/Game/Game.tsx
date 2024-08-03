@@ -120,7 +120,7 @@ function createSprites() {
     });
 }
 
-export const Game: React.FC = () => {
+export const GameComponent: React.FC = () => {
     const {
         screen,
         setScreen,
@@ -287,3 +287,9 @@ export const Game: React.FC = () => {
         </div>
     );
 };
+
+export const Game = () => (
+    <React.StrictMode>
+        <GameComponent />
+    </React.StrictMode>
+);

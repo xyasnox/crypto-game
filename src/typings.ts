@@ -1,9 +1,14 @@
 export interface UserInfo {
-    accountId?: number;
-    userId: number;
+    // userId from base
+    id: number;
     balance: number;
     remainingGames: number;
     farmEndTimestamp?: number;
+}
+
+export interface InitialUserInfo extends Omit<UserInfo, 'id'> {
+    accountId?: number;
+    userId: number;
 }
 
 export enum TaskStatus {
