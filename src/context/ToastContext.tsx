@@ -57,11 +57,15 @@ export const ToastContextProvider: React.FC<ToastProviderProps> = ({ duration = 
         };
     }, [toast, duration]);
 
+    const handleClose = () => setToast(null);
+
     return (
         <ToastContext.Provider value={{ triggerToast: setToast }}>
             {children}
             <Portal>
-                <Toast show={!!toast}>{toast}</Toast>
+                <Toast show={!!toast} onClose={handleClose}>
+                    {toast}
+                </Toast>
             </Portal>
         </ToastContext.Provider>
     );
